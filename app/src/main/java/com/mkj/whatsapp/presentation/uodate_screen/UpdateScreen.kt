@@ -1,0 +1,270 @@
+package com.mkj.whatsapp.presentation.uodate_screen
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.mkj.whatsapp.R
+import com.mkj.whatsapp.model.ChannelModel
+import com.mkj.whatsapp.presentation.navigation.BottomNavigation
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview(showSystemUi = true)
+fun UpdateScreen() {
+    val channels = listOf(
+        ChannelModel("WhatsApp", R.drawable.whatsapp_icon),
+        ChannelModel("Meta", R.drawable.meta),
+        ChannelModel("Tech News", R.drawable.img),
+        ChannelModel("NeetRoots", R.drawable.neat_roots)
+    )
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Updates",
+                        fontSize = 21.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = Color(0xFF075E54)
+                ),
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(R.drawable.camera),
+                            contentDescription = "Camera",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(R.drawable.search),
+                            contentDescription = "Search",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(R.drawable.more),
+                            contentDescription = "More",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = ::BottomNavigation,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {},
+                containerColor = Color(0xFF075E54)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_photo_camera_24),
+                    contentDescription = "Add status",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surface
+    ) { padding ->
+
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxWidth()
+        ) {
+
+            // Status header
+            Text(
+                text = "Status",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Gray,
+                modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 8.dp)
+            )
+
+            // My Status row
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Box {
+                    Image(
+                        painter = painterResource(R.drawable.man),
+                        contentDescription = "My status",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(56.dp)
+                            .clip(CircleShape)
+                    )
+
+                    // Add badge
+                    Box(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(Alignment.BottomEnd)
+                            .background(
+                                color = Color(0xFF25D366),
+                                shape = CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_add_24),
+                            contentDescription = "Add",
+                            tint = Color.White,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = Modifier.padding(start = 12.dp)
+                ) {
+                    Text(
+                        text = "My status",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = "Tap to add status update",
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                }
+            }
+            ChannelsSection(channels)
+        }
+    }
+}
+
+@Composable
+fun ChannelsSection(channels: List<ChannelModel>) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp)
+    ) {
+
+        // Header
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Channels",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Text(
+                text = "Explore",
+                fontSize = 14.sp,
+                color = Color(0xFF25D366)
+            )
+        }
+
+        // Subtitle
+        Text(
+            text = "Stay updated on topics you care about",
+            fontSize = 14.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+
+        // Horizontal list
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            items(channels) { channel ->
+                ChannelItem(channel)
+            }
+        }
+    }
+}
+
+@Composable
+fun ChannelItem(channel: ChannelModel) {
+    Column(
+        modifier = Modifier
+            .width(120.dp)
+            .padding(end = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Image(
+            painter = painterResource(channel.image),
+            contentDescription = channel.name,
+            modifier = Modifier
+                .size(64.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = channel.name,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        Text(
+            text = "Follow",
+            fontSize = 13.sp,
+            color = Color(0xFF075E54),
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+
