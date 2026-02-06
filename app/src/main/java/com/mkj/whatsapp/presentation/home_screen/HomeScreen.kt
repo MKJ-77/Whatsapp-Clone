@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 import com.mkj.whatsapp.model.ChatDataModel
 import com.mkj.whatsapp.presentation.navigation.BottomNavigation
@@ -39,7 +40,7 @@ import com.mkj.whatsapp.presentation.navigation.BottomNavigation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showSystemUi = true)
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     Scaffold(
         topBar = ::TopAppBar,
         bottomBar = ::BottomNavigation,
