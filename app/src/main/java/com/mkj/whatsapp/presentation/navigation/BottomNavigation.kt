@@ -1,7 +1,12 @@
 package com.mkj.whatsapp.presentation.navigation
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -9,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,9 +44,9 @@ fun BottomNavigation(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.chat_icon,
                 text = "Chats",
-                selected = currentRoute == Screen.Chats.route
+                selected = currentRoute == Routes.Home.route
             ) {
-                navController.navigate(Screen.Chats.route) {
+                navController.navigate(Routes.Home.route) {
                     launchSingleTop = true
                 }
             }
@@ -51,9 +55,9 @@ fun BottomNavigation(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.update_icon,
                 text = "Updates",
-                selected = currentRoute == Screen.Updates.route
+                selected = currentRoute == Routes.Update.route
             ) {
-                navController.navigate(Screen.Updates.route) {
+                navController.navigate(Routes.Update.route) {
                     launchSingleTop = true
                 }
             }
@@ -62,9 +66,9 @@ fun BottomNavigation(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.communities_icon,
                 text = "Communities",
-                selected = currentRoute == Screen.Communities.route
+                selected = currentRoute == Routes.Community.route
             ) {
-                navController.navigate(Screen.Communities.route) {
+                navController.navigate(Routes.Community.route) {
                     launchSingleTop = true
                 }
             }
@@ -73,9 +77,9 @@ fun BottomNavigation(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.telephone,
                 text = "Calls",
-                selected = currentRoute == Screen.Calls.route
+                selected = currentRoute == Routes.Calling.route
             ) {
-                navController.navigate(Screen.Calls.route) {
+                navController.navigate(Routes.Calling.route) {
                     launchSingleTop = true
                 }
             }
