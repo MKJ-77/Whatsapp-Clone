@@ -27,7 +27,6 @@ import com.mkj.whatsapp.presentation.navigation.BottomNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showSystemUi = true)
 fun CommunityScreen(navController: NavHostController) {
 
     val communities = listOf(
@@ -68,7 +67,7 @@ fun CommunityScreen(navController: NavHostController) {
                 }
             )
         },
-        bottomBar = ::BottomNavigation,
+        bottomBar = { BottomNavigation(navController) },
         containerColor = MaterialTheme.colorScheme.surface
     ) { padding ->
 

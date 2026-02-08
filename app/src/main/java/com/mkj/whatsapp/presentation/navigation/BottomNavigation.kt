@@ -47,7 +47,11 @@ fun BottomNavigation(
                 selected = currentRoute == Routes.Home.route
             ) {
                 navController.navigate(Routes.Home.route) {
+                    popUpTo(Routes.Home.route) {
+                        saveState = true
+                    }
                     launchSingleTop = true
+                    restoreState = true
                 }
             }
 

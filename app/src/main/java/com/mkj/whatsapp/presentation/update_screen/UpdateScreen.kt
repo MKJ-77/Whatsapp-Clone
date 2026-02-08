@@ -56,7 +56,6 @@ import com.mkj.whatsapp.presentation.navigation.BottomNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showSystemUi = true)
 fun UpdateScreen(navController: NavHostController) {
     var expanded by remember { mutableStateOf(false) }
     val channels = listOf(
@@ -136,7 +135,7 @@ fun UpdateScreen(navController: NavHostController) {
                 }
             )
         },
-        bottomBar = ::BottomNavigation,
+        bottomBar = { BottomNavigation(navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {},

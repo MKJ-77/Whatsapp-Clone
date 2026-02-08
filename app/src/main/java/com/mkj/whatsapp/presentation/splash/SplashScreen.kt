@@ -1,66 +1,81 @@
 package com.mkj.whatsapp.presentation.splash
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
+import com.mkj.whatsapp.presentation.navigation.Routes
+import kotlinx.coroutines.delay
 
 @Composable
-@Preview(showBackground = true)
 fun SplashScreen(navController: NavHostController) {
+
+    // 🔑 Splash logic
+    LaunchedEffect(Unit) {
+        delay(1500)
+        navController.navigate(Routes.Welcome.route) {
+            popUpTo(Routes.Splash.route) {
+                inclusive = true
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(4.dp)
     ) {
+
         Icon(
             painter = painterResource(R.drawable.whatsapp_icon),
             contentDescription = "App Logo",
-            tint = Color(0xFF5BCE12),
+            tint = Color(0xFF25D366),
             modifier = Modifier
                 .size(120.dp)
                 .align(Alignment.Center)
         )
+
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         ) {
+
             Text(
-                "From",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                text = "From",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Gray
             )
-            Row(Modifier.padding(6.dp)) {
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 4.dp)
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.meta),
-                    contentDescription = "meta_Logo",
+                    contentDescription = "Meta Logo",
                     tint = Color(0xFF3D860F),
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(32.dp)
                 )
-                Spacer(Modifier.padding(4.dp))
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    "Meta",
-                    fontSize = 32.sp,
-                    color = Color(0xFF3D860F),
-                    fontWeight = FontWeight.SemiBold
+                    text = "Meta",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF3D860F)
                 )
             }
         }

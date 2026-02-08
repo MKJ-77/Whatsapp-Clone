@@ -2,14 +2,8 @@ package com.mkj.whatsapp.presentation.home_screen
 
 import TopAppBar
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -21,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -39,118 +33,116 @@ import com.mkj.whatsapp.presentation.navigation.BottomNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showSystemUi = true)
 fun HomeScreen(navController: NavHostController) {
+
+    val chatList = remember {
+        listOf(
+            ChatDataModel(R.drawable.ajay_devgn, "Ajay Devgan", "HI", "9:00"),
+            ChatDataModel(
+                R.drawable.carryminati,
+                "Carry Minati",
+                "HI This is Carry Minati, How are you doing. Mr Keshav",
+                "9:00"
+            ),
+            ChatDataModel(R.drawable.akshay_kumar, "Aditya Krishna Sharma", "HI", "9:00"),
+            ChatDataModel(R.drawable.bhuvan_bam, "BB", "HI", "9:00"),
+            ChatDataModel(R.drawable.boy, "Arnav", "HI", "9:00"),
+            ChatDataModel(R.drawable.boy1, "Yavar", "HI", "9:00"),
+            ChatDataModel(R.drawable.boy3, "Rupesh", "HI", "9:00"),
+            ChatDataModel(R.drawable.rashmika, "Rashmika Mandhana", "HI", "9:00"),
+            ChatDataModel(R.drawable.salman_khan, "Salman Khan", "HI", "9:00"),
+            ChatDataModel(R.drawable.sharukh_khan, "Shahrukh Khan", "HI", "9:00"),
+            ChatDataModel(R.drawable.sharadha_kapoor, "Shraddha Kapoor", "HI", "9:00"),
+            ChatDataModel(R.drawable.mrbeast, "Mr Beast", "HI", "9:00"),
+            ChatDataModel(R.drawable.hrithik_roshan, "Hrithik Roshan", "HI", "9:00"),
+            ChatDataModel(R.drawable.tripti_dimri, "Tripti Dimri", "HI", "9:00"),
+        )
+    }
+
     Scaffold(
-        topBar = ::TopAppBar,
-        bottomBar = ::BottomNavigation,
+        topBar = { TopAppBar() },
+        bottomBar = { BottomNavigation(navController) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}, modifier = Modifier.padding(10.dp), containerColor = Color(0xFF69C950)
+                onClick = { /* New chat */ },
+                containerColor = Color(0xFF69C950)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.add_chat_icon),
-                    contentDescription = "Message_Icon",
+                    contentDescription = "New Chat",
                     tint = Color.White,
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(30.dp)
+                    modifier = Modifier.size(28.dp)
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.surface,
-    ) {
-        Column(
-            modifier = Modifier.padding(it)
+        containerColor = MaterialTheme.colorScheme.surface
+    ) { padding ->
+
+        LazyColumn(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 80.dp)
         ) {
-            HorizontalDivider()
-            ChatList()
+            item { HorizontalDivider() }
+
+            items(chatList) { chat ->
+                ChatListItem(chat) {
+                    // navController.navigate("chat_detail/${chat.name}")
+                }
+            }
         }
     }
 }
-
-
 @Composable
-fun ChatList() {
-    val chatList = listOf<ChatDataModel>(
-        ChatDataModel(R.drawable.ajay_devgn, "Ajay Devgan", "HI", "9:00"),
-        ChatDataModel(
-            R.drawable.carryminati,
-            "Carry Minati",
-            "HI This is Carry Minati, How are you doing. Mr Keshav ",
-            "9:00"
-        ),
-        ChatDataModel(R.drawable.akshay_kumar, "Aditaya Krishna Sharma", "HI", "9:00"),
-        ChatDataModel(R.drawable.bhuvan_bam, "BB", "HI", "9:00"),
-        ChatDataModel(R.drawable.boy, "Arnav", "HI", "9:00"),
-        ChatDataModel(R.drawable.boy1, "Yavar", "HI", "9:00"),
-        ChatDataModel(R.drawable.boy3, "Rupesh", "HI", "9:00"),
-        ChatDataModel(R.drawable.rashmika, "Rashmika Mandhana", "HI", "9:00"),
-        ChatDataModel(R.drawable.salman_khan, "Salman Khan", "HI", "9:00"),
-        ChatDataModel(R.drawable.sharukh_khan, "Shahrukh Khan", "HI", "9:00"),
-        ChatDataModel(R.drawable.sharadha_kapoor, "Shradhha Kapoor", "HI", "9:00"),
-        ChatDataModel(R.drawable.mrbeast, "Mr Beast", "HI", "9:00"),
-        ChatDataModel(R.drawable.hrithik_roshan, "Hrithik Roshan", "HI", "9:00"),
-        ChatDataModel(R.drawable.tripti_dimri, "Tripti Dimri", "HI", "9:00"),
-    )
-    LazyColumn {
-        items(chatList) {
-            ChatListItem(chatData = it)
-        }
-    }
-}
-
-@Composable
-fun ChatListItem(chatData: ChatDataModel) {
+fun ChatListItem(
+    chatData: ChatDataModel,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
-            .height(72.dp)
+            .clickable { onClick() }
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .height(72.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+
         Image(
             painter = painterResource(chatData.image),
-            contentDescription = "DP",
+            contentDescription = "Profile",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(56.dp)
                 .clip(CircleShape)
         )
+
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 8.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
+                .padding(start = 12.dp)
         ) {
-            Spacer(Modifier.padding(5.dp))
             Text(
                 text = chatData.name,
-                fontSize = 17.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1
             )
-            Spacer(Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = chatData.message,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
                 fontSize = 14.sp,
-                color = Color.Gray
-            )
-        }
-        Column(
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.End,
-            modifier = Modifier.padding(top = 8.dp)
-        ) {
-            Text(
-                chatData.time,
-                fontSize = 14.sp,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.W400,
                 color = Color.Gray,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
+
+        Text(
+            text = chatData.time,
+            fontSize = 13.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
