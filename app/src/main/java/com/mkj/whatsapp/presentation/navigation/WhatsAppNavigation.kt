@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mkj.whatsapp.presentation.auth.UserRegistrationScreen
 import com.mkj.whatsapp.presentation.calling_screen.CallingScreen
+import com.mkj.whatsapp.presentation.chat_detail.ChatDetailScreen
 import com.mkj.whatsapp.presentation.community_screen.CommunityScreen
 import com.mkj.whatsapp.presentation.home_screen.HomeScreen
 import com.mkj.whatsapp.presentation.splash.SplashScreen
@@ -13,7 +14,7 @@ import com.mkj.whatsapp.presentation.update_screen.UpdateScreen
 import com.mkj.whatsapp.presentation.welcome.WelcomeScreen
 
 @Composable
-fun AppNavigation() {
+fun WhatsAppNavigation() {
 
     val navController = rememberNavController()
 
@@ -48,6 +49,17 @@ fun AppNavigation() {
 
         composable(Routes.Calling.route) {
             CallingScreen(navController)
+        }
+        composable(
+            route = Routes.ChatDetail.route
+        ) { backStackEntry ->
+            val userName =
+                backStackEntry.arguments?.getString("userName") ?: ""
+
+            ChatDetailScreen(
+                navController = navController,
+                userName = userName
+            )
         }
     }
 }

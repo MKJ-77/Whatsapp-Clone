@@ -15,4 +15,8 @@ sealed class Routes(val route: String) {
     object Community : Routes("CommunityScreen")
 
     object Calling : Routes("CallingScreen")
+    object ChatDetail : Routes("ChatDetailScreen/{userName}") {
+        fun createRoute(userName: String): String =
+            "ChatDetailScreen/$userName"
+    }
 }
