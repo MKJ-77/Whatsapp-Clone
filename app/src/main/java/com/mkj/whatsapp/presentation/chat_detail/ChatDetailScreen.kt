@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -25,11 +26,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 import com.mkj.whatsapp.model.ChatMessage
@@ -48,17 +49,11 @@ import com.mkj.whatsapp.model.ChatMessage
 @Composable
 fun ChatDetailScreen(
     navController: NavHostController,
-    userName: String = "Ajay Devgan"
+    userName: String,
+    viewModel: ChatViewModel = viewModel()
 ) {
 
-    val messages = remember {
-        mutableStateListOf(
-            ChatMessage("1", "Hey!", false, "9:00"),
-            ChatMessage("2", "Hi 👋", true, "9:01"),
-            ChatMessage("3", "How are you?", false, "9:02"),
-            ChatMessage("4", "Doing great 😄", true, "9:03")
-        )
-    }
+    val messages by viewModel.messages.collectAsState()
 
     Scaffold(
         topBar = {
@@ -88,24 +83,17 @@ fun ChatDetailScreen(
             }
 
             MessageInputBar { text ->
-                messages.add(
-                    ChatMessage(
-                        id = System.currentTimeMillis().toString(),
-                        text = text,
-                        isMine = true,
-                        time = "Now"
-                    )
-                )
+                viewModel.sendMessage(text)
             }
         }
     }
 }
 
+
 @Composable
 fun MessageInputBar(
     onSend: (String) -> Unit
 ) {
-
     var text by remember { mutableStateOf("") }
 
     Row(
@@ -120,11 +108,7 @@ fun MessageInputBar(
             onValueChange = { text = it },
             modifier = Modifier.weight(1f),
             placeholder = { Text("Message") },
-            shape = RoundedCornerShape(24.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
-            )
+            shape = RoundedCornerShape(24.dp)
         )
 
         Spacer(modifier = Modifier.width(6.dp))
@@ -147,6 +131,7 @@ fun MessageInputBar(
         }
     }
 }
+
 
 @Composable
 fun MessageBubble(message: ChatMessage) {

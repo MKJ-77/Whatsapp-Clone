@@ -74,6 +74,9 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    //View Model
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
 
     // Tests
     testImplementation(libs.junit)
