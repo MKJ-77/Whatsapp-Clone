@@ -1,5 +1,6 @@
 package com.mkj.whatsapp.presentation.navigation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,10 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.mkj.whatsapp.R
 
 @Composable
-fun BottomNavigation() {
+fun BottomNavigation(
+    navController: NavHostController
+) {
+    val backStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry.value?.destination?.route
+
     BottomAppBar(
         tonalElevation = 0.dp,
         containerColor = MaterialTheme.colorScheme.surface
@@ -31,45 +39,73 @@ fun BottomNavigation() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             BottomNavItem(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.chat_icon,
                 text = "Chats",
-                selected = true
-            )
+                selected = currentRoute == Routes.Home.route
+            ) {
+                navController.navigate(Routes.Home.route) {
+                    popUpTo(Routes.Home.route) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }
+
             BottomNavItem(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.update_icon,
-                text = "Updates"
-            )
+                text = "Updates",
+                selected = currentRoute == Routes.Update.route
+            ) {
+                navController.navigate(Routes.Update.route) {
+                    launchSingleTop = true
+                }
+            }
+
             BottomNavItem(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.communities_icon,
-                text = "Communities"
-            )
+                text = "Communities",
+                selected = currentRoute == Routes.Community.route
+            ) {
+                navController.navigate(Routes.Community.route) {
+                    launchSingleTop = true
+                }
+            }
+
             BottomNavItem(
                 modifier = Modifier.weight(1f),
                 image = R.drawable.telephone,
-                text = "Calls"
-            )
+                text = "Calls",
+                selected = currentRoute == Routes.Calling.route
+            ) {
+                navController.navigate(Routes.Calling.route) {
+                    launchSingleTop = true
+                }
+            }
         }
     }
 }
-
-
 
 @Composable
 fun BottomNavItem(
     modifier: Modifier = Modifier,
     image: Int,
     text: String,
-    selected: Boolean = false,
+    selected: Boolean,
+    onClick: () -> Unit
 ) {
     val activeColor = Color(0xFF075E54)
     val inactiveColor = Color.Gray
 
     Column(
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier
+            .fillMaxHeight()
+            .clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

@@ -20,14 +20,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 import com.mkj.whatsapp.model.CommunityModel
 import com.mkj.whatsapp.presentation.navigation.BottomNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showSystemUi = true)
-fun CommunityScreen() {
+fun CommunityScreen(navController: NavHostController) {
 
     val communities = listOf(
         CommunityModel("Android Devs", R.drawable.img, "3 groups · Today"),
@@ -67,7 +67,7 @@ fun CommunityScreen() {
                 }
             )
         },
-        bottomBar = ::BottomNavigation,
+        bottomBar = { BottomNavigation(navController) },
         containerColor = MaterialTheme.colorScheme.surface
     ) { padding ->
 

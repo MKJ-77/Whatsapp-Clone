@@ -30,11 +30,12 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 
 @Composable
 @Preview(showSystemUi = true)
-fun WelcomeScreen() {
+fun WelcomeScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()

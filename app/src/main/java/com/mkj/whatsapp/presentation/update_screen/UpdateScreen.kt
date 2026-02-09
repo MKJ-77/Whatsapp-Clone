@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 import com.mkj.whatsapp.model.ChannelModel
 import com.mkj.whatsapp.model.StatusUpdate
@@ -55,8 +56,7 @@ import com.mkj.whatsapp.presentation.navigation.BottomNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(showSystemUi = true)
-fun UpdateScreen() {
+fun UpdateScreen(navController: NavHostController) {
     var expanded by remember { mutableStateOf(false) }
     val channels = listOf(
         ChannelModel("WhatsApp", R.drawable.whatsapp_icon),
@@ -135,7 +135,7 @@ fun UpdateScreen() {
                 }
             )
         },
-        bottomBar = ::BottomNavigation,
+        bottomBar = { BottomNavigation(navController) },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {},

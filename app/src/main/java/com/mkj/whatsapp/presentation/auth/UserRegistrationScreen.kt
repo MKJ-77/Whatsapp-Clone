@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 data class Country(val name: String, val code: String)
 
@@ -43,7 +44,7 @@ data class Country(val name: String, val code: String)
 @Composable
 @Preview(showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
-fun UserRegistrationScreen() {
+fun UserRegistrationScreen(navController: NavHostController) {
     val countryList = listOf(
         Country("India", "+91"),
         Country("United States", "+1"),
