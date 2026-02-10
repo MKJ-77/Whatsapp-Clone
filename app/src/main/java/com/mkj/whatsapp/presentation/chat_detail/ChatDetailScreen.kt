@@ -1,5 +1,6 @@
 package com.mkj.whatsapp.presentation.chat_detail
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -36,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,9 +50,15 @@ import com.mkj.whatsapp.model.ChatMessage
 @Composable
 fun ChatDetailScreen(
     navController: NavHostController,
-    userName: String,
-    viewModel: ChatViewModel = viewModel()
+    userName: String
 ) {
+    val context = LocalContext.current
+    val viewModel: ChatViewModel = viewModel(
+        factory = ChatViewModelFactory(
+            context.applicationContext as Application,
+            userName
+        )
+    )
 
     val messages by viewModel.messages.collectAsState()
 

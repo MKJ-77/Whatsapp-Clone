@@ -1,32 +1,60 @@
 package com.mkj.whatsapp.presentation.chat_detail
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.mkj.whatsapp.data.local.db.DatabaseProvider
+import com.mkj.whatsapp.data.local.entity.MessageEntity
+import com.mkj.whatsapp.data.repository.ChatRepository
 import com.mkj.whatsapp.model.ChatMessage
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class ChatViewModel : ViewModel() {
+class ChatViewModel(
+    application: Application,
+    private val chatUser: String
+) : AndroidViewModel(application) {
 
-    private val _messages = MutableStateFlow<List<ChatMessage>>(
-        listOf(
-            ChatMessage("1", "Hey!", false, "9:00"),
-            ChatMessage("2", "Hi 👋", true, "9:01"),
-            ChatMessage("3", "How are you?", false, "9:02"),
-            ChatMessage("4", "Doing great 😄", true, "9:03")
-        )
-    )
+    private val repository: ChatRepository
 
-    val messages: StateFlow<List<ChatMessage>> = _messages.asStateFlow()
+    val messages: StateFlow<List<ChatMessage>>
+
+    init {
+        val db = DatabaseProvider.provideDatabase(application)
+        repository = ChatRepository(db.messageDao())
+
+        messages = repository.getMessages(chatUser)
+            .map { list ->
+                list.map {
+                    ChatMessage(
+                        id = it.id,
+                        text = it.text,
+                        isMine = it.isMine,
+                        time = it.time
+                    )
+                }
+            }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                emptyList()
+            )
+    }
 
     fun sendMessage(text: String) {
-        val newMessage = ChatMessage(
-            id = System.currentTimeMillis().toString(),
-            text = text,
-            isMine = true,
-            time = "Now"
-        )
-
-        _messages.value = _messages.value + newMessage
+        viewModelScope.launch {
+            repository.sendMessage(
+                MessageEntity(
+                    id = System.currentTimeMillis().toString(),
+                    chatUser = chatUser,
+                    text = text,
+                    isMine = true,
+                    time = "Now"
+                )
+            )
+        }
     }
 }

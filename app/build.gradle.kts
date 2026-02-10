@@ -77,6 +77,12 @@ dependencies {
     //View Model
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    //RoomDB
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+
 
     // Tests
     testImplementation(libs.junit)
