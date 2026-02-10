@@ -33,10 +33,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.mkj.whatsapp.presentation.navigation.Routes
 
 data class Country(val name: String, val code: String)
 
@@ -75,6 +75,7 @@ fun UserRegistrationScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -145,7 +146,7 @@ fun UserRegistrationScreen(navController: NavHostController) {
                 placeholder = { Text("phone number") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                modifier = Modifier.weight(.75f),
+                modifier = Modifier.weight(1f),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -155,18 +156,33 @@ fun UserRegistrationScreen(navController: NavHostController) {
                 )
             )
         }
+        Text(
+            text = "WhatsApp will send an SMS to verify your phone number.",
+            fontSize = 12.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(top = 8.dp)
+        )
 
 
         Spacer(modifier = Modifier.height(30.dp))
+        val isValid = phoneNumber.length >= 10
 
         Button(
-            onClick = { /* verify */ },
+            onClick = {
+                val fullPhone = "${selectedCountry.code} $phoneNumber"
+                navController.navigate(
+                    Routes.Otp.createRoute(fullPhone)
+                )
+            },
+            enabled = phoneNumber.length >= 10,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF075E54)
+                containerColor = Color(0xFF075E54),
+                disabledContainerColor = Color.LightGray
             )
         ) {
             Text("Next", color = Color.White)
         }
+
     }
 
 

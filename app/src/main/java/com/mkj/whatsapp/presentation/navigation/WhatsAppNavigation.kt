@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mkj.whatsapp.presentation.auth.OtpScreen
 import com.mkj.whatsapp.presentation.auth.UserRegistrationScreen
 import com.mkj.whatsapp.presentation.calling_screen.CallingScreen
 import com.mkj.whatsapp.presentation.chat_detail.ChatDetailScreen
@@ -38,6 +39,18 @@ fun WhatsAppNavigation() {
         composable(Routes.Home.route) {
             HomeScreen(navController)
         }
+
+        composable(
+            route = Routes.Otp.route
+        ) { backStackEntry ->
+            val phone = backStackEntry.arguments?.getString("phone") ?: ""
+
+            OtpScreen(
+                navController = navController,
+                phoneNumber = phone
+            )
+        }
+
 
         composable(Routes.Update.route) {
             UpdateScreen(navController)

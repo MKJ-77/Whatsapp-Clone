@@ -1,5 +1,6 @@
 package com.mkj.whatsapp.presentation.welcome
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,17 +44,15 @@ fun WelcomeScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
+        Image(
             painter = painterResource(R.drawable.whatsapp_sticker2),
             contentDescription = "Whatsapp Sticker",
             modifier = Modifier
                 .size(250.dp)
                 .clip(CircleShape),
-            tint = Color(0xFF4ABB18),
-
-            )
+        )
         Spacer(Modifier.padding(20.dp))
-        Text(text = "Welcome to Whatsapp", fontWeight = FontWeight.Bold, fontSize = 28.sp)
+        Text(text = "Welcome to Whatsapp", fontWeight = FontWeight.SemiBold, fontSize = 28.sp)
         Spacer(Modifier.padding(14.dp))
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -104,7 +102,11 @@ fun WelcomeScreen(navController: NavHostController) {
 
         }
         Button(
-            onClick = { navController.navigate(Routes.UserRegistration.route) },
+            onClick = {
+                navController.navigate(Routes.UserRegistration.route) {
+                    popUpTo(Routes.Welcome.route) { inclusive = true }
+                }
+            },
             modifier = Modifier
                 .padding(top = 16.dp)
                 .size(width = 250.dp, height = 50.dp),

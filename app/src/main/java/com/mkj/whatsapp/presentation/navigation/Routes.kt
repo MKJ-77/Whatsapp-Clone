@@ -10,6 +10,11 @@ sealed class Routes(val route: String) {
 
     object UserRegistration : Routes("UserRegistrationScreen")
 
+    object Otp : Routes("otp/{phone}") {
+        fun createRoute(phone: String): String =
+            "otp/$phone"
+    }
+
     object Home : Routes("HomeScreen")
 
     object Update : Routes("UpdateScreen")
