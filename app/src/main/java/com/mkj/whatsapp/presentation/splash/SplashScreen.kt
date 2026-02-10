@@ -1,5 +1,6 @@
 package com.mkj.whatsapp.presentation.splash
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,7 +24,7 @@ fun SplashScreen(navController: NavHostController) {
     // 🔑 Splash logic
     LaunchedEffect(Unit) {
         delay(1500)
-        navController.navigate(Routes.Welcome.route) {
+        navController.navigate(Routes.Home.route) {
             popUpTo(Routes.Splash.route) {
                 inclusive = true
             }
@@ -33,6 +34,7 @@ fun SplashScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(4.dp)
     ) {
 

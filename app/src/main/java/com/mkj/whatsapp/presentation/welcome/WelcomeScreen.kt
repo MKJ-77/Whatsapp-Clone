@@ -1,5 +1,6 @@
 package com.mkj.whatsapp.presentation.welcome
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,18 +28,18 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
+import com.mkj.whatsapp.presentation.navigation.Routes
 
 @Composable
-@Preview(showSystemUi = true)
 fun WelcomeScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -103,7 +104,7 @@ fun WelcomeScreen(navController: NavHostController) {
 
         }
         Button(
-            onClick = { },
+            onClick = { navController.navigate(Routes.UserRegistration.route) },
             modifier = Modifier
                 .padding(top = 16.dp)
                 .size(width = 250.dp, height = 50.dp),

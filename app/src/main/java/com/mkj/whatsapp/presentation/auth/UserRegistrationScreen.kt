@@ -42,7 +42,6 @@ data class Country(val name: String, val code: String)
 
 
 @Composable
-@Preview(showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
 fun UserRegistrationScreen(navController: NavHostController) {
     val countryList = listOf(

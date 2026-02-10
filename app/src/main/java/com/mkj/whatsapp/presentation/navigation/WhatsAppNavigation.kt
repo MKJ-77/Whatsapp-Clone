@@ -52,13 +52,9 @@ fun WhatsAppNavigation() {
         }
         composable(
             route = Routes.ChatDetail.route
-        ) { backStackEntry ->
-            val userName =
-                backStackEntry.arguments?.getString("userName") ?: ""
-
+        ) {
             ChatDetailScreen(
                 navController = navController,
-                userName = userName
             )
         }
     }

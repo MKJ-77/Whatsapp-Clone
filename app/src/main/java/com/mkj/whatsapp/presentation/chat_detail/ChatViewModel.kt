@@ -1,32 +1,30 @@
 package com.mkj.whatsapp.presentation.chat_detail
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mkj.whatsapp.data.local.db.DatabaseProvider
 import com.mkj.whatsapp.data.local.entity.MessageEntity
 import com.mkj.whatsapp.data.repository.ChatRepository
 import com.mkj.whatsapp.model.ChatMessage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatViewModel(
-    application: Application,
-    private val chatUser: String
-) : AndroidViewModel(application) {
+@HiltViewModel
+class ChatViewModel @Inject constructor(
+    private val repository: ChatRepository,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    private val repository: ChatRepository
+    val chatUser: String =
+        savedStateHandle["userName"] ?: ""
 
-    val messages: StateFlow<List<ChatMessage>>
-
-    init {
-        val db = DatabaseProvider.provideDatabase(application)
-        repository = ChatRepository(db.messageDao())
-
-        messages = repository.getMessages(chatUser)
+    val messages: StateFlow<List<ChatMessage>> =
+        repository.observeMessages(chatUser)
             .map { list ->
                 list.map {
                     ChatMessage(
@@ -42,11 +40,28 @@ class ChatViewModel(
                 SharingStarted.WhileSubscribed(5_000),
                 emptyList()
             )
+
+    init {
+        repository.connectSocket { incomingText ->
+            viewModelScope.launch {
+                repository.saveMessage(
+                    MessageEntity(
+                        id = System.currentTimeMillis().toString(),
+                        chatUser = chatUser,
+                        text = incomingText,
+                        isMine = false,
+                        time = "Now"
+                    )
+                )
+            }
+        }
     }
 
     fun sendMessage(text: String) {
         viewModelScope.launch {
-            repository.sendMessage(
+
+            // Save locally (instant UI)
+            repository.saveMessage(
                 MessageEntity(
                     id = System.currentTimeMillis().toString(),
                     chatUser = chatUser,
@@ -55,6 +70,14 @@ class ChatViewModel(
                     time = "Now"
                 )
             )
+
+            // Send via WebSocket
+            repository.sendRealtimeMessage(text)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        repository.connectSocket {}
     }
 }

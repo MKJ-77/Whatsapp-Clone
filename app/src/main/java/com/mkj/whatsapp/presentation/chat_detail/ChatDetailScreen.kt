@@ -1,6 +1,5 @@
 package com.mkj.whatsapp.presentation.chat_detail
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,12 +35,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 import com.mkj.whatsapp.model.ChatMessage
@@ -49,23 +47,15 @@ import com.mkj.whatsapp.model.ChatMessage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatDetailScreen(
-    navController: NavHostController,
-    userName: String
+    navController: NavHostController
 ) {
-    val context = LocalContext.current
-    val viewModel: ChatViewModel = viewModel(
-        factory = ChatViewModelFactory(
-            context.applicationContext as Application,
-            userName
-        )
-    )
-
+    val viewModel: ChatViewModel = hiltViewModel()
     val messages by viewModel.messages.collectAsState()
 
     Scaffold(
         topBar = {
             ChatDetailTopBar(
-                name = userName,
+                name = viewModel.chatUser,
                 onBack = { navController.popBackStack() }
             )
         },
