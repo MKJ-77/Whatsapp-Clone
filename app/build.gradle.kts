@@ -4,10 +4,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    kotlin("plugin.serialization")
 }
+
 
 android {
     namespace = "com.mkj.whatsapp"
@@ -73,6 +74,17 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    //View Model
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    //RoomDB
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    //For WebScoket
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
 
     // Tests

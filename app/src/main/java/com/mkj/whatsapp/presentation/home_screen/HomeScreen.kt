@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
 import com.mkj.whatsapp.model.ChatDataModel
 import com.mkj.whatsapp.presentation.navigation.BottomNavigation
+import com.mkj.whatsapp.presentation.navigation.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,7 +89,9 @@ fun HomeScreen(navController: NavHostController) {
 
             items(chatList) { chat ->
                 ChatListItem(chat) {
-                    // navController.navigate("chat_detail/${chat.name}")
+                    navController.navigate(
+                        Routes.ChatDetail.createRoute(chat.name)
+                    )
                 }
             }
         }
