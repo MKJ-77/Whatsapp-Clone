@@ -1,6 +1,6 @@
 package com.mkj.whatsapp.presentation.home_screen
 
-import TopAppBar
+import WhatsAppTopAppBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -61,7 +61,7 @@ fun HomeScreen(navController: NavHostController) {
     }
 
     Scaffold(
-        topBar = { TopAppBar() },
+        topBar = { WhatsAppTopAppBar() },
         bottomBar = { BottomNavigation(navController) },
         floatingActionButton = {
             FloatingActionButton(
@@ -107,7 +107,7 @@ fun ChatListItem(
             .fillMaxWidth()
             .clickable { onClick() }
             .padding(horizontal = 12.dp, vertical = 8.dp)
-            .height(72.dp),
+            .heightIn(min=72.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 

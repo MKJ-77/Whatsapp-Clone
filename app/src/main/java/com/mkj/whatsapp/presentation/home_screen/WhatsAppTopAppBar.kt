@@ -17,7 +17,7 @@ import com.mkj.whatsapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar() {
+fun WhatsAppTopAppBar() {
     TopAppBar(
         title = {
             Text(
