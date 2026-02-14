@@ -3,7 +3,6 @@ package com.mkj.whatsapp.presentation.chat_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mkj.whatsapp.data.local.entity.MessageEntity
 import com.mkj.whatsapp.data.repository.ChatRepository
 import com.mkj.whatsapp.model.ChatMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,43 +40,9 @@ class ChatViewModel @Inject constructor(
                 emptyList()
             )
 
-    init {
-        repository.connectSocket { incomingText ->
-            viewModelScope.launch {
-                repository.saveMessage(
-                    MessageEntity(
-                        id = System.currentTimeMillis().toString(),
-                        chatUser = chatUser,
-                        text = incomingText,
-                        isMine = false,
-                        time = "Now"
-                    )
-                )
-            }
-        }
-    }
-
     fun sendMessage(text: String) {
         viewModelScope.launch {
-
-            // Save locally (instant UI)
-            repository.saveMessage(
-                MessageEntity(
-                    id = System.currentTimeMillis().toString(),
-                    chatUser = chatUser,
-                    text = text,
-                    isMine = true,
-                    time = "Now"
-                )
-            )
-
-            // Send via WebSocket
-            repository.sendRealtimeMessage(text)
+            repository.sendMessage(chatUser, text)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        repository.connectSocket {}
     }
 }
