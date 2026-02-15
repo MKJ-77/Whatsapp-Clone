@@ -3,7 +3,8 @@ package com.mkj.whatsapp.presentation.chat_detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mkj.whatsapp.data.repository.ChatRepository
+import com.mkj.whatsapp.data.local.entity.MessageEntity
+import com.mkj.whatsapp.domain.repository.ChatRepository
 import com.mkj.whatsapp.model.ChatMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,30 +20,46 @@ class ChatViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val chatUser: String =
+    val chatId: String =
         savedStateHandle["userName"] ?: ""
 
     val messages: StateFlow<List<ChatMessage>> =
-        repository.observeMessages(chatUser)
+        repository.observeMessages(chatId)
             .map { list ->
                 list.map {
                     ChatMessage(
-                        id = it.id,
-                        text = it.text,
-                        isMine = it.isMine,
-                        time = it.time
+                        id = it.messageId,
+                        text = it.content ?: "",
+                        isMine = it.senderId == "me",
+                        time = formatTime(it.timestamp)
                     )
                 }
             }
             .stateIn(
                 viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
+                SharingStarted.WhileSubscribed(5000),
                 emptyList()
             )
 
+    init {
+        repository.connect()
+    }
+
     fun sendMessage(text: String) {
         viewModelScope.launch {
-            repository.sendMessage(chatUser, text)
+            repository.sendMessage(chatId, text)
         }
+    }
+
+    override fun onCleared() {
+        repository.disconnect()
+        super.onCleared()
+    }
+
+    private fun formatTime(timestamp: Long): String {
+        return java.text.SimpleDateFormat(
+            "HH:mm",
+            java.util.Locale.getDefault()
+        ).format(java.util.Date(timestamp))
     }
 }
