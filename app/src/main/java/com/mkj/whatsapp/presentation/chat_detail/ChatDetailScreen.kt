@@ -55,7 +55,7 @@ fun ChatDetailScreen(
     Scaffold(
         topBar = {
             ChatDetailTopBar(
-                name = viewModel.chatUser,
+                name = viewModel.chatId,
                 onBack = { navController.popBackStack() }
             )
         },

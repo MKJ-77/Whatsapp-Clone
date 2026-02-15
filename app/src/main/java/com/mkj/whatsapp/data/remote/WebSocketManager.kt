@@ -10,14 +10,14 @@ class WebSocketManager @Inject constructor() {
 
     private val client = OkHttpClient()
     private var webSocket: WebSocket? = null
-    private var listener: ((String) -> Unit)? = null
     private var isConnected = false
+    private var listener: ((SocketMessage) -> Unit)? = null
 
-    fun setListener(onMessage: (String) -> Unit) {
+    fun setListener(onMessage: (SocketMessage) -> Unit) {
         listener = onMessage
     }
 
-    fun connectIfNeeded() {
+    fun connect() {
         if (isConnected) return
 
         val request = Request.Builder()
@@ -28,39 +28,45 @@ class WebSocketManager @Inject constructor() {
             request,
             object : WebSocketListener() {
 
-                override fun onOpen(webSocket: WebSocket, response: Response) {
+                override fun onOpen(ws: WebSocket, response: Response) {
                     isConnected = true
-                    println("WebSocket Connected")
                 }
 
-                override fun onMessage(webSocket: WebSocket, text: String) {
-                    listener?.invoke(text)
+                override fun onMessage(ws: WebSocket, text: String) {
+                    val message = parseMessage(text)
+                    listener?.invoke(message)
                 }
-
-                override fun onMessage(webSocket: WebSocket, bytes: ByteString) {}
 
                 override fun onFailure(
-                    webSocket: WebSocket,
+                    ws: WebSocket,
                     t: Throwable,
                     response: Response?
                 ) {
                     isConnected = false
-                    t.printStackTrace()
                 }
 
-                override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                override fun onClosed(
+                    ws: WebSocket,
+                    code: Int,
+                    reason: String
+                ) {
                     isConnected = false
                 }
             }
         )
     }
 
-    fun send(message: String) {
-        webSocket?.send(message)
+    fun send(message: SocketMessage) {
+        webSocket?.send(message.toJson())
     }
 
     fun disconnect() {
-        webSocket?.close(1000, "Closed")
+        webSocket?.close(1000, null)
         isConnected = false
+    }
+
+    private fun parseMessage(text: String): SocketMessage {
+        // TODO: Use proper JSON parsing later
+        return SocketMessage.fromJson(text)
     }
 }
