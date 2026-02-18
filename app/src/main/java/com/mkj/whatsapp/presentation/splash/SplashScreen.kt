@@ -6,6 +6,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,8 +15,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.mkj.whatsapp.R
+import com.mkj.whatsapp.presentation.auth.AuthViewModel
 import com.mkj.whatsapp.presentation.navigation.Routes
 import kotlinx.coroutines.delay
 
@@ -22,14 +26,17 @@ import kotlinx.coroutines.delay
 fun SplashScreen(navController: NavHostController) {
 
     // 🔑 Splash logic
-    LaunchedEffect(Unit) {
-        delay(1500)
-        navController.navigate(Routes.Welcome.route) {
-            popUpTo(Routes.Splash.route) {
-                inclusive = true
-            }
+    val viewModel: AuthViewModel = hiltViewModel()
+    val user by viewModel.loggedInUser.collectAsState()
+
+    LaunchedEffect(user) {
+        if (user == null) {
+            navController.navigate(Routes.Welcome.route)
+        } else {
+            navController.navigate(Routes.Home.route)
         }
     }
+
 
     Box(
         modifier = Modifier
