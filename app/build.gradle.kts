@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     kotlin("plugin.serialization")
+    id("com.google.gms.google-services")
 }
 
 
@@ -86,6 +87,14 @@ dependencies {
     //For WebScoket
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
+    //DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
+    //FireBase Auth
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
     // Tests
     testImplementation(libs.junit)

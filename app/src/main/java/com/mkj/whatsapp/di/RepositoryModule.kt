@@ -1,6 +1,8 @@
 package com.mkj.whatsapp.di
 
+import com.mkj.whatsapp.data.repository.AuthRepositoryImpl
 import com.mkj.whatsapp.data.repository.ChatRepositoryImpl
+import com.mkj.whatsapp.domain.repository.AuthRepository
 import com.mkj.whatsapp.domain.repository.ChatRepository
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindChatRepository(
         impl: ChatRepositoryImpl
     ): ChatRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(
+        impl: AuthRepositoryImpl
+    ): AuthRepository
 }
